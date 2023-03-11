@@ -1,4 +1,12 @@
-import { Meta, Links, Outlet, Scripts, LiveReload } from "@remix-run/react";
+import {
+  Meta,
+  Links,
+  Outlet,
+  Scripts,
+  LiveReload,
+  useCatch,
+  Link,
+} from "@remix-run/react";
 import styles from "~/styles/index.css";
 import Headers from "~/components/headers";
 import Footer from "~/components/footer";
@@ -58,11 +66,38 @@ function Document({ children }) {
       <body>
         <Headers />
         {children}
-        <Footer/>
+        <Footer />
 
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  );
+}
+
+/****Manejo de Errores****** */
+
+export function CatchBoundary() {
+  const error = useCatch();
+
+  return (
+    <Document>
+      <p className="error">
+        {error.status} {error.statusText}
+        <Link className="error-enlace" to={'/'}>Tal vez quieras volver a la pagina principal</Link>
+
+      </p>
+    </Document>
+  );
+}
+
+export function ErrorBoundary({ error }) {
+  return (
+    <Document>
+      <p className="error">
+        {error.status} {error.statusText}
+        <Link className="error-enlace" to={'/'}>Tal vez quieras volver a la pagina principal</Link>
+      </p>
+    </Document>
   );
 }
